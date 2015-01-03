@@ -114,11 +114,14 @@
     <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <property name="extendedMetadata">
+                   <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
                         <property name="idpDiscoveryEnabled" value="true"/>
-                    </bean>
+                        <property name="signMetadata" value="false"/>
+                    </bean>    
                 </property>
+                <property name="entityId" value="https://krm1-dev-ed.my.salesforce.com"/>
+		
             </bean>
         </constructor-arg>
     </bean>
