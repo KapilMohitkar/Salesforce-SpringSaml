@@ -169,7 +169,7 @@
                 
                 <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
                     <constructor-arg>
-                        <value type="java.io.File">/usr/local/metadata/SAMLIdP-0sp90000000L13M.xml</value>
+                        <value type="java.io.File">/home/firstuser/dev/SAMLIdP-0sp90000000L13M.xml</value>
                     </constructor-arg>
                     <property name="parserPool" ref="parserPool"/>
                 </bean>
