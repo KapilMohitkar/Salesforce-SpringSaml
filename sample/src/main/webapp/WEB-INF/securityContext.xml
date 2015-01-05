@@ -120,7 +120,7 @@
                         <property name="signMetadata" value="false"/>
                     </bean>    
                 </property>
-                <property name="entityId" value="https://krm1-dev-ed.my.salesforce.com"/>
+                <property name="entityId" value="http://localhost:8084/spring-security-saml2-sample/"/>
 		
             </bean>
         </constructor-arg>
@@ -142,7 +142,7 @@
                             </constructor-arg>
                             <constructor-arg>
                                 <bean class="org.opensaml.util.resource.ClasspathResource">
-                                    <constructor-arg value="/metadata/idp.xml"/>
+                                    <constructor-arg value="/metadata/SAMLIdP-0sp90000000L13M.xml"/>
                                 </bean>
                             </constructor-arg>
                             <property name="parserPool" ref="parserPool"/>
@@ -154,26 +154,26 @@
                     </constructor-arg>
                 </bean>
                 <!-- Example of HTTP metadata without Extended Metadata -->
-                <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
+               <!-- <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">-->
                     <!-- URL containing the metadata -->
-                    <constructor-arg>
+                   <!-- <constructor-arg>
                         <value type="java.lang.String">http://idp.ssocircle.com/idp-meta.xml</value>
-                    </constructor-arg>
+                    </constructor-arg>-->
                     <!-- Timeout for metadata loading in ms -->
-                    <constructor-arg>
+                   <!-- <constructor-arg>
                         <value type="int">15000</value>
                     </constructor-arg>
                     <property name="parserPool" ref="parserPool"/>
-                </bean>
+                </bean>-->
                 <!-- Example of file system metadata without Extended Metadata -->
-                <!--
+                
                 <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
                     <constructor-arg>
-                        <value type="java.io.File">/usr/local/metadata/idp.xml</value>
+                        <value type="java.io.File">/usr/local/metadata/SAMLIdP-0sp90000000L13M.xml</value>
                     </constructor-arg>
                     <property name="parserPool" ref="parserPool"/>
                 </bean>
-                -->
+                
             </list>
         </constructor-arg>
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
