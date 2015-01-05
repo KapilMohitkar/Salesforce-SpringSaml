@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="https://krm1-dev-ed.my.salesforce.com" validUntil="2025-01-03T08:57:26.360Z">
+   <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+      <md:KeyDescriptor use="signing">
+         <ds:KeyInfo>
+            <ds:X509Data>
+               <ds:X509Certificate>MIIEhDCCA2ygAwIBAgIOAUp3GnGEAAAAAD/qpyUwDQYJKoZIhvcNAQEFBQAwgYMxGzAZBgNVBAMMEnNhbGVzZm9yY2VfaWRwX2NlcjEYMBYGA1UECwwPMDBEOTAwMDAwMDB3RnhQMRcwFQYDVQQKDA5TYWxlc2ZvcmNlLmNvbTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzELMAkGA1UECAwCQ0ExDDAKBgNVBAYTA1VTQTAeFw0xNDEyMjMxMjIzNDlaFw0xNjEyMjIxMjIzNDlaMIGDMRswGQYDVQQDDBJzYWxlc2ZvcmNlX2lkcF9jZXIxGDAWBgNVBAsMDzAwRDkwMDAwMDAwd0Z4UDEXMBUGA1UECgwOU2FsZXNmb3JjZS5jb20xFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xCzAJBgNVBAgMAkNBMQwwCgYDVQQGEwNVU0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCR7s0sMVQ1+UJzRVWU+0JtHJDc1jnXSZ6b1F5vuEfDBmV+VPmE+C57EIjhBMn6jV8rqAHFVPQ5YPVExYh8ya+OcyoLnjrw0482NDkRsWIfwfLcv1L0AiXpGfzuQyqpW6ncFDj0lThMVCUJnS7Mkhk22k1aH5WPgdqVFCE59EaV8Fm+a07WtJtFQrV/FMl90KYHqRlCZ9prtLRFg0Bd1CMWDGIr8Ekixkv+WJIQo2QVSxXixgWD3mNmY9HxxyCu5ykjNoXNP5tceO+8zIKiHHsFC4xQ1UhYzD1qOv3IyZsKu3EjR2gkydio5t/cv5/mGACa6Zgp5cqa6uBQNpi190ahAgMBAAGjgfMwgfAwHQYDVR0OBBYEFPvi6vG0jvCqS7w/6qEOn+pvRZV9MIG9BgNVHSMEgbUwgbKAFPvi6vG0jvCqS7w/6qEOn+pvRZV9oYGJpIGGMIGDMRswGQYDVQQDDBJzYWxlc2ZvcmNlX2lkcF9jZXIxGDAWBgNVBAsMDzAwRDkwMDAwMDAwd0Z4UDEXMBUGA1UECgwOU2FsZXNmb3JjZS5jb20xFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xCzAJBgNVBAgMAkNBMQwwCgYDVQQGEwNVU0GCDgFKdxpxogAAAAA/6qclMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAEUmFK0biWponbzqkHRW0ibj0xyGdlLrIRpKCPuLom2Z6z729ydirDc8+EAKy2Kt7z7X7eUATbFv2PLijgTLIlJNHKoB9mh1cKa2VifLeCoaeCqf0P3u/cf3XJUhPbwF8t5KBODD7/tmy/g1KvfxuhrQ+DUJX6+6d40szzChEm1A9cD8HF7ycbXt5Kckl5UMV69WpZlYKEdHR1r7WYN3rEncmwrftBY26Rm7ciZIXpY/uwYMGbGUDTwkvS4xGSIaQsRYhfQpO6milXu3VV495gqJw6LkCm33VDAJ1WcHTScqDEPnpmC+qBqnb/NwM3wqOCv+6GhlDtfaVWmfem99f4o=</ds:X509Certificate>
+            </ds:X509Data>
+         </ds:KeyInfo>
+      </md:KeyDescriptor>
+      <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+      <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://krm1-dev-ed.my.salesforce.com/idp/endpoint/HttpPost"/>
+      <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://krm1-dev-ed.my.salesforce.com/idp/endpoint/HttpRedirect"/>
+   </md:IDPSSODescriptor>
+</md:EntityDescriptor>
