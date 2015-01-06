@@ -120,7 +120,7 @@
                         <property name="signMetadata" value="false"/>
                     </bean>    
                 </property>
-                <property name="entityId" value="http://localhost:8084/spring-security-saml2-sample/"/>
+                <property name="entityId" value="http://localhost:8084/spring-security-saml2-sample/index.jsp"/>
 		
             </bean>
         </constructor-arg>
