@@ -10,9 +10,19 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/securityContext.xml
+            /WEB-INF/Spring-All-Module.xml
         </param-value>
     </context-param>
+    <servlet>
+		<servlet-name>mvc-dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>mvc-dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 
     <servlet>
         <servlet-name>saml</servlet-name>
