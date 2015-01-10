@@ -116,7 +116,7 @@
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
                    <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                        <property name="idpDiscoveryEnabled" value="true"/>
+                        <property name="idpDiscoveryEnabled" value="false"/>
                         <property name="signMetadata" value="false"/>
                     </bean>    
                 </property>

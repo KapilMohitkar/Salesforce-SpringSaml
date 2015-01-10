@@ -83,13 +83,13 @@ public class APIGenerator {
     public static void main(String[] args) {
        
         try {
-        // XmlParser.runAPI(new APIGenerator().createAPI("create", "attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617&record=false&voiceBridge=79380&welcome=%3Cbr%3EWelcome+to+%3Cb%3E%25%25CONFNAME%25%25%3C%2Fb%3E%21"));
+         XmlParser.runAPI(new APIGenerator().createAPI("create", "attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617&record=false&voiceBridge=79380&welcome=%3Cbr%3EWelcome+to+%3Cb%3E%25%25CONFNAME%25%25%3C%2Fb%3E%21"));
             //join moderator
          // XmlParser.runAPI(new APIGenerator().createAPI("join", "fullName=User+6361063&meetingID=random-9736617&password=mp"));
       //   XmlParser.runAPI(new APIGenerator().createAPI("join", "fullName=User+6361063&meetingID=random-9736617&password=ap"));
          // XmlParser.runAPI(new APIGenerator().createAPI("isMeetingRunning", "meetingID=random-9736617"));
          // XmlParser.runAPI(new APIGenerator().createAPI("getMeetingInfo", "meetingID=random-9736617&password=mp"));
-          XmlParser.runAPI(new APIGenerator().createAPI("end", "meetingID=random-9736617&password=mp"));
+        //  XmlParser.runAPI(new APIGenerator().createAPI("end", "meetingID=random-9736617&password=mp"));
           //XmlParser.runAPI(new APIGenerator().createAPI("getMeetings", ""));
          // XmlParser.runAPI(new APIGenerator().createAPI("getDefaultConfigXML", ""));
          // XmlParser.runAPI(new APIGenerator().createAPI("getRecordings", "meetingID=random-9736617"));
