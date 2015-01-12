@@ -17,6 +17,9 @@
     <security:http security="none" pattern="/images/**"/>
     <security:http security="none" pattern="/css/**"/>
     <security:http security="none" pattern="/logout.jsp"/>
+    <security:http security="none" pattern="/list.jsp"/>
+    <security:http security="none" pattern="/meeting/**"/>
+    <security:http security="none" pattern="/joinmeeting/**"/>
 
     <!-- Security for the administration UI -->
     <security:http pattern="/saml/web/**" access-denied-page="/saml/web/metadata/login">
