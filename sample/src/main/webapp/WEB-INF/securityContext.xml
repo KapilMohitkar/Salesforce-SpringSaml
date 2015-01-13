@@ -18,7 +18,7 @@
     <security:http security="none" pattern="/css/**"/>
     <security:http security="none" pattern="/logout.jsp"/>
     <security:http security="none" pattern="/list.jsp"/>
-    <security:http security="none" pattern="/meeting/**"/>
+    <security:http security="none" pattern="/createmeeting/**"/>
     <security:http security="none" pattern="/joinmeeting/**"/>
 
     <!-- Security for the administration UI -->
