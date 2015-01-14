@@ -14,7 +14,7 @@
 
     <!-- Unsecured pages -->
     <security:http security="none" pattern="/favicon.ico"/>
-    <security:http security="none" pattern="/images/**"/>
+    <security:http security="none" pattern="/images/style.css"/>
     <security:http security="none" pattern="/css/**"/>
     <security:http security="none" pattern="/logout.jsp"/>
     <security:http security="none" pattern="/list.jsp"/>
@@ -123,8 +123,8 @@
                         <property name="signMetadata" value="false"/>
                     </bean>    
                 </property>
-                <property name="entityId" value="http://localhost:8084/spring-security-saml2-sample/index.jsp"/>
-		
+                <property name="entityId" value="https://localhost/spring-security-saml2-sample/index.jsp"/>
+		<property name="entityBaseURL" value="https://localhost/spring-security-saml2-sample"/>
             </bean>
         </constructor-arg>
     </bean>
@@ -194,8 +194,17 @@
     </bean>
 
     <!-- Provider of default SAML Context -->
-    <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl"/>
+<!--    <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl"/>-->
 
+    <bean id="contextProvider"
+        class="org.springframework.security.saml.context.SAMLContextProviderLB">
+        <property name="scheme" value="https"/>
+        <property name="serverName" value="localhost"/>
+        <property name="serverPort" value="443"/>
+        <property name="includeServerPortInRequestURL" value="false"/>
+        <property name="contextPath" value="/spring-security-saml2-sample"/>
+    </bean>
+    
     <!-- Processing filter for WebSSO profile messages -->
     <bean id="samlWebSSOProcessingFilter" class="org.springframework.security.saml.SAMLProcessingFilter">
         <property name="authenticationManager" ref="authenticationManager"/>
