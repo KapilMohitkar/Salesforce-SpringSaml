@@ -124,7 +124,9 @@
                     </bean>    
                 </property>
                 <property name="entityId" value="https://bbs-prod.cloudapp.net/spring-security-saml2-sample"/>
-		<property name="entityBaseURL" value="https://bbs-prod.cloudapp.net/spring-security-saml2-sample"/>
+		<!--
+                For azure-->
+                <property name="entityBaseURL" value="https://bbs-prod.cloudapp.net/spring-security-saml2-sample"/>
             </bean>
         </constructor-arg>
     </bean>
@@ -189,9 +191,10 @@
     </bean>
 
     <!-- Provider of default SAML Context -->
-<!--    <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl"/>-->
-
-    <bean id="contextProvider"
+    <!--For localhost-->
+  <!--  <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl"/>-->
+   <!--for azure-->
+   <bean id="contextProvider"
         class="org.springframework.security.saml.context.SAMLContextProviderLB">
         <property name="scheme" value="https"/>
         <property name="serverName" value="bbs-prod.cloudapp.net"/>

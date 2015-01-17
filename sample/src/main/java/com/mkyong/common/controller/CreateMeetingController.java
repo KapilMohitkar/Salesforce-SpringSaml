@@ -24,14 +24,15 @@ public class CreateMeetingController {
         try {
             //model.addAttribute("meeting", name);
             APIGenerator aPIGenerator = new APIGenerator();
-             Map<String, String> forwardCallMap = null;
-             forwardCallMap.put(name,"attendeePW=ap&meetingID=random-9736617&moderatorPW=mp");
-             String param=forwardCallMap.get(name);
-           Map<String, String> responceMap = XmlParser.runAPI( aPIGenerator.createAPI("create", param));
+            // Map<String, String> forwardCallMap = null;
+           //  forwardCallMap.put(name,"attendeePW=ap&meetingID=random-9736617&moderatorPW=mp");
+           //  String param=forwardCallMap.get(name);
+           Map<String, String> responceMap = XmlParser.runAPI( aPIGenerator.createAPI("create", name));
            // aPIGenerator.createAPI("join", name);
             // ss = responceMap.get("meetingID");
           //  System.out.println("in the class.....value=" + aPIGenerator.apiWithChecksum);
             // aPIGenerator.apiWithChecksum;
+            System.out.println("mmmmmmmmmmmmm="+responceMap.get("meetingID"));
            // return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);  
 //        } catch (SAXException ex) {
 //            Logger.getLogger(MovieController.class.getName()).log(Level.SEVERE, null, ex);
