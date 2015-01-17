@@ -24,7 +24,10 @@ public class CreateMeetingController {
         try {
             //model.addAttribute("meeting", name);
             APIGenerator aPIGenerator = new APIGenerator();
-            Map<String, String> responceMap = XmlParser.runAPI( aPIGenerator.createAPI("create", name));
+             Map<String, String> forwardCallMap = null;
+             forwardCallMap.put(name,"attendeePW=ap&meetingID=random-9736617&moderatorPW=mp");
+             String param=forwardCallMap.get(name);
+           Map<String, String> responceMap = XmlParser.runAPI( aPIGenerator.createAPI("create", param));
            // aPIGenerator.createAPI("join", name);
             // ss = responceMap.get("meetingID");
           //  System.out.println("in the class.....value=" + aPIGenerator.apiWithChecksum);
