@@ -17,6 +17,9 @@ package com.relecotech.common.controller;
 
 import com.relecotech.bbb.api.APIGenerator;
 import com.relecotech.bbb.api.XmlParser;
+import com.relecotech.helper.TimeChecker;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -49,26 +52,45 @@ public class AcceptParameterController {
                 String[] mapPair = str.split("=");
                 valueMap.put(mapPair[0], mapPair[1]);
             }
-            System.out.println("valuemap="+valueMap);
-             APIGenerator aPIGenerator = new APIGenerator();
-             Map<String, String> responceMap = XmlParser.runAPI( aPIGenerator.createAPI("isMeetingRunning","meetingID="+valueMap.get("meetingID")));
-             if(responceMap.get("running")=="true"){
-                 String join=valueMap.get("meetingID")+valueMap.get("fullName")+valueMap.get("password");
-                 aPIGenerator.createAPI("join", join);
-                 return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum); 
-             }
-             else{
-                 //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
-                 String create="attendeePW="+valueMap.get("attendeePW")+"&meetingID="+valueMap.get("meetingID")+"&moderatorPW="+valueMap.get("moderatorPW")+"&name="+valueMap.get("name");
-                 System.out.println("create parameter="+create);
-                  XmlParser.runAPI( aPIGenerator.createAPI("create",create));
-                  String join="fullName="+valueMap.get("fullName")+"&meetingID="+valueMap.get("meetingID")+"&password="+valueMap.get("moderatorPW");
-                  System.out.println("joinparam="+join);
-                 aPIGenerator.createAPI("join", join);
-                 return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum); 
-                 
-             }
+            String startTime = valueMap.get("starttime");
+            String intervalTime[]=startTime.substring(0,5).split(":");
+            int hour=Integer.parseInt(intervalTime[0]);
+            int minute=Integer.parseInt(intervalTime[1]);
+            minute=minute+30;
+            String endTimeForJoing=hour+""+minute;
+            
+            
+           // String dateobj = new SimpleDateFormat("hh:mm a").format(new Date());
+            TimeChecker application1 = new TimeChecker();
+            application1.compareStringOne = startTime;
+            application1.compareStringTwo = endTimeForJoing;
+            boolean compareDates = application1.compareDates();
+           // System.out.println(dateobj.getTime());
+            if(compareDates){
 
+            System.out.println("valuemap=" + valueMap);
+            APIGenerator aPIGenerator = new APIGenerator();
+            Map<String, String> responceMap = XmlParser.runAPI(aPIGenerator.createAPI("isMeetingRunning", "meetingID=" + valueMap.get("meetingID")));
+            if (responceMap.get("running") == "true") {
+                String join = valueMap.get("meetingID") + valueMap.get("fullName") + valueMap.get("password");
+                aPIGenerator.createAPI("join", join);
+                return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
+            } else {
+                //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
+                String create = "attendeePW=" + valueMap.get("attendeePW") + "&meetingID=" + valueMap.get("meetingID") + "&moderatorPW=" + valueMap.get("moderatorPW") + "&name=" + valueMap.get("name");
+                System.out.println("create parameter=" + create);
+                XmlParser.runAPI(aPIGenerator.createAPI("create", create));
+                String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("moderatorPW");
+                System.out.println("joinparam=" + join);
+                aPIGenerator.createAPI("join", join);
+                return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
+
+            }
+            }
+            else{
+                
+                 return new ModelAndView("redirect:" +"bbb.jsp");
+            }
             //return new ModelAndView("redirect:" + "www.url.com");
 //        } catch (SAXException ex) {
 //            Logger.getLogger(MovieController.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,7 +99,7 @@ public class AcceptParameterController {
         } catch (Exception ex) {
             Logger.getLogger(JoinMeetingController.class.getName()).log(Level.SEVERE, null, ex);
         }
-       //return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
+        //return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
         return null;
     }
 
