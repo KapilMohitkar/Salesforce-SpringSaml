@@ -49,17 +49,21 @@ public class AcceptParameterController {
                 String[] mapPair = str.split("=");
                 valueMap.put(mapPair[0], mapPair[1]);
             }
+            System.out.println("valuemap="+valueMap);
              APIGenerator aPIGenerator = new APIGenerator();
-             Map<String, String> responceMap = XmlParser.runAPI( aPIGenerator.createAPI("isMeetingRunning",valueMap.get("meetingID")));
+             Map<String, String> responceMap = XmlParser.runAPI( aPIGenerator.createAPI("isMeetingRunning","meetingID="+valueMap.get("meetingID")));
              if(responceMap.get("running")=="true"){
                  String join=valueMap.get("meetingID")+valueMap.get("fullName")+valueMap.get("password");
                  aPIGenerator.createAPI("join", join);
                  return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum); 
              }
              else{
-                 String create=valueMap.get("meetingID")+valueMap.get("name");
+                 //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
+                 String create="attendeePW="+valueMap.get("attendeePW")+"&meetingID="+valueMap.get("meetingID")+"&moderatorPW="+valueMap.get("moderatorPW")+"&name="+valueMap.get("name");
+                 System.out.println("create parameter="+create);
                   XmlParser.runAPI( aPIGenerator.createAPI("create",create));
-                  String join=valueMap.get("meetingID")+valueMap.get("fullName")+valueMap.get("password");
+                  String join="fullName="+valueMap.get("fullName")+"&meetingID="+valueMap.get("meetingID")+"&password="+valueMap.get("moderatorPW");
+                  System.out.println("joinparam="+join);
                  aPIGenerator.createAPI("join", join);
                  return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum); 
                  

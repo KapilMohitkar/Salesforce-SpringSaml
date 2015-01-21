@@ -28,9 +28,9 @@ import org.apache.commons.codec.digest.*;
  */
 public class APIGenerator {
 
- //   public static final String SALT = "3cba79d28212d86d3a6181d6d9ed1308";
-   // public static final String SALT = "8cd8ef52e8e101574e400365b55e11a6";//online server salt
-    public static final String SALT = "7f62f5cf0fda6b3e63724229618ecb07";//Azure server salt
+    //public static final String SALT = "aac740d5b63c200f2b49a0bd0fe9177e";
+  public static final String SALT = "8cd8ef52e8e101574e400365b55e11a6";//online server salt
+   // public static final String SALT = "7f62f5cf0fda6b3e63724229618ecb07";//Azure server salt
     public String api;
     private String server;
     private String action;
@@ -38,11 +38,12 @@ public class APIGenerator {
     public String apiWithChecksum;
 
     public APIGenerator() {
+      //  https://bbs.relecotech.com/spring-security-saml2-sample/saml/SSO    //for azure ACS url
 
-        //this.server = "http://192.168.1.31:8080/bigbluebutton/api/";
+     //   this.server = "http://192.168.1.12/bigbluebutton/api/";
         
-     //   this.server = "http://test-install.blindsidenetworks.com/bigbluebutton/api/";//online servercommand to get=sudo bbb-conf --secret
-        this.server = "http://bbs.relecotech.com/bigbluebutton/api/";//azure server
+       this.server = "http://test-install.blindsidenetworks.com/bigbluebutton/api/";//online servercommand to get=sudo bbb-conf --secret
+       // this.server = "http://bbs.relecotech.com/bigbluebutton/api/";//azure server
 
     }
 
