@@ -126,7 +126,7 @@
                 <property name="entityId" value="https://bbs-prod.cloudapp.net/spring-security-saml2-sample"/>
 		<!--
                 For azure-->
-                <property name="entityBaseURL" value="https://bbs-prod.cloudapp.net/spring-security-saml2-sample"/>
+                <property name="entityBaseURL" value="https://bbs.relecotech.com/spring-security-saml2-sample"/>
             </bean>
         </constructor-arg>
     </bean>
@@ -197,7 +197,7 @@
    <bean id="contextProvider"
         class="org.springframework.security.saml.context.SAMLContextProviderLB">
         <property name="scheme" value="https"/>
-        <property name="serverName" value="bbs-prod.cloudapp.net"/>
+        <property name="serverName" value="bbs.relecotech.com"/>
         <property name="serverPort" value="443"/>
         <property name="includeServerPortInRequestURL" value="false"/>
         <property name="contextPath" value="/spring-security-saml2-sample"/>
