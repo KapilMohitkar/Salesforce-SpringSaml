@@ -10,7 +10,7 @@ public class TimeChecker {
 
     public static final String inputFormat = "HH:mm";
 
-    private Date date;
+    public Date date;
     private Date dateCompareOne;
     private Date dateCompareTwo;
 
@@ -19,13 +19,23 @@ public class TimeChecker {
 
     SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.US);
 
-    public  boolean compareDates() {
+    public TimeChecker() {
         Calendar now = Calendar.getInstance();
 
         int hour = now.get(Calendar.HOUR);
         int minute = now.get(Calendar.MINUTE);
 
-        date = parseDate(hour + ":" + minute);
+       date = parseDate(hour + ":" + minute);
+    }
+
+    public  boolean compareDates() {
+//        Calendar now = Calendar.getInstance();
+//
+//        int hour = now.get(Calendar.HOUR);
+//        int minute = now.get(Calendar.MINUTE);
+
+     //   date = parseDate(hour + ":" + minute);
+         //date=parseDate(new SimpleDateFormat("hh:mm a").format(new Date()));
         dateCompareOne = parseDate(compareStringOne);
         dateCompareTwo = parseDate(compareStringTwo);
 
@@ -52,6 +62,7 @@ public class TimeChecker {
         TimeChecker application1= new TimeChecker();
         application1.compareStringOne="07:09 AM";
         application1.compareStringTwo="08:15 AM";
+        System.out.println(application1.date);
         boolean compareDates = application1.compareDates();
         System.out.println(compareDates);
     }

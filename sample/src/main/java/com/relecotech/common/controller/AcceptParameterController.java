@@ -57,13 +57,21 @@ public class AcceptParameterController {
             int hour=Integer.parseInt(intervalTime[0]);
             int minute=Integer.parseInt(intervalTime[1]);
             minute=minute+30;
-            String endTimeForJoing=hour+""+minute;
+            if(minute>=60){
+                minute=minute-60;
+                hour=hour+1;
+                
+            }
+            String endTimeForJoing=hour+":"+minute;
             
             
            // String dateobj = new SimpleDateFormat("hh:mm a").format(new Date());
             TimeChecker application1 = new TimeChecker();
             application1.compareStringOne = startTime;
+            System.out.println("Start Time="+application1.compareStringOne );
             application1.compareStringTwo = endTimeForJoing;
+              System.out.println("End Time="+application1.compareStringTwo );
+            System.out.println("Current Time="+application1.date);
             boolean compareDates = application1.compareDates();
            // System.out.println(dateobj.getTime());
             if(compareDates){
@@ -89,7 +97,7 @@ public class AcceptParameterController {
             }
             else{
                 
-                 return new ModelAndView("redirect:" +"bbb.jsp");
+                 return new ModelAndView("redirect:" +"https://krm1-dev-ed.my.salesforce.com/");
             }
             //return new ModelAndView("redirect:" + "www.url.com");
 //        } catch (SAXException ex) {
