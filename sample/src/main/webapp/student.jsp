@@ -12,6 +12,10 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>The meeting is not started yet.</h1>
-    </body>
+    <center>  <h1>Wait The Presenter is not join meeting yet!</h1></center>
+    <center>  <h2>
+            Please try after few minutes.
+        </h2></center>
+    <center>  <a href="<%  %>">Back </a></center>
+</body>
 </html>
