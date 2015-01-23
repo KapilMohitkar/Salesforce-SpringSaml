@@ -53,51 +53,56 @@ public class AcceptParameterController {
                 valueMap.put(mapPair[0], mapPair[1]);
             }
             String startTime = valueMap.get("starttime");
-            String intervalTime[]=startTime.substring(0,5).split(":");
-            int hour=Integer.parseInt(intervalTime[0]);
-            int minute=Integer.parseInt(intervalTime[1]);
-            minute=minute+30;
-            if(minute>=60){
-                minute=minute-60;
-                hour=hour+1;
-                
+            String intervalTime[] = startTime.substring(0, 5).split(":");
+            int hour = Integer.parseInt(intervalTime[0]);
+            int minute = Integer.parseInt(intervalTime[1]);
+            minute = minute + 30;
+            if (minute >= 60) {
+                minute = minute - 60;
+                hour = hour + 1;
+
             }
-            String endTimeForJoing=hour+":"+minute;
-            
-            
-           // String dateobj = new SimpleDateFormat("hh:mm a").format(new Date());
+            String endTimeForJoing = hour + ":" + minute;
+
+            // String dateobj = new SimpleDateFormat("hh:mm a").format(new Date());
             TimeChecker application1 = new TimeChecker();
             application1.compareStringOne = startTime;
-            System.out.println("Start Time="+application1.compareStringOne );
+            System.out.println("Start Time=" + application1.compareStringOne);
             application1.compareStringTwo = endTimeForJoing;
-              System.out.println("End Time="+application1.compareStringTwo );
-            System.out.println("Current Time="+application1.date);
+            System.out.println("End Time=" + application1.compareStringTwo);
+            System.out.println("Current Time=" + application1.date);
             boolean compareDates = application1.compareDates();
-           // System.out.println(dateobj.getTime());
-            if(compareDates){
+            System.out.println(valueMap);
+            System.out.println("time="+compareDates);
+            if (compareDates) {
+                APIGenerator aPIGenerator = new APIGenerator();
+                if (valueMap.get("user").matches("true")) {
+                    System.out.println("valuemap=" + valueMap);
+                    //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
+                    String create = "attendeePW=ap"+"&meetingID=" + valueMap.get("meetingID") + "&moderatorPW=newuser" + "&name=" + valueMap.get("name");
+                    System.out.println("create parameter=" + create);
+                    XmlParser.runAPI(aPIGenerator.createAPI("create", create));
+                    String join = "fullName=" + valueMap.get("fullName") + "&meetingID="+valueMap.get("meetingID")+ "&password=newuser" ;
+                    System.out.println("joinparam=" + join);
+                    aPIGenerator.createAPI("join", join);
+                    return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
 
-            System.out.println("valuemap=" + valueMap);
-            APIGenerator aPIGenerator = new APIGenerator();
-            Map<String, String> responceMap = XmlParser.runAPI(aPIGenerator.createAPI("isMeetingRunning", "meetingID=" + valueMap.get("meetingID")));
-            if (responceMap.get("running") == "true") {
-                String join = valueMap.get("meetingID") + valueMap.get("fullName") + valueMap.get("password");
-                aPIGenerator.createAPI("join", join);
-                return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
+                } 
+                if(valueMap.get("user").matches("false")){
+                    Map<String, String> responceMap = XmlParser.runAPI(aPIGenerator.createAPI("isMeetingRunning", "meetingID=" + valueMap.get("meetingID")));
+                    if (responceMap.get("running").matches("true")) {
+                        String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password="+ valueMap.get("attendeePW") ;
+                        aPIGenerator.createAPI("join", join);
+                        return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
+                    }
+                    else{
+                        return new ModelAndView("redirect:" + "/student.jsp");
+                    }
+                }
+
             } else {
-                //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
-                String create = "attendeePW=" + valueMap.get("attendeePW") + "&meetingID=" + valueMap.get("meetingID") + "&moderatorPW=" + valueMap.get("moderatorPW") + "&name=" + valueMap.get("name");
-                System.out.println("create parameter=" + create);
-                XmlParser.runAPI(aPIGenerator.createAPI("create", create));
-                String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("moderatorPW");
-                System.out.println("joinparam=" + join);
-                aPIGenerator.createAPI("join", join);
-                return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
 
-            }
-            }
-            else{
-                
-                 return new ModelAndView("redirect:" +"https://krm1-dev-ed.my.salesforce.com/");
+                return new ModelAndView("redirect:" + "/wait.jsp");
             }
             //return new ModelAndView("redirect:" + "www.url.com");
 //        } catch (SAXException ex) {
