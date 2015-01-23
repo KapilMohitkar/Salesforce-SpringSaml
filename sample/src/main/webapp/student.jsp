@@ -16,6 +16,6 @@
     <center>  <h2>
             Please try after few minutes.
         </h2></center>
-    <center>  <a href="<%  %>">Back </a></center>
+    <center>  <a href="https://dev-tms-test-dev-ed.my.salesforce.com/">Back </a></center>
 </body>
 </html>
