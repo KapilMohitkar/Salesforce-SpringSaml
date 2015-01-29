@@ -85,7 +85,6 @@ public class AcceptParameterController {
                     String join = "fullName=" + valueMap.get("fullName") + "&meetingID="+valueMap.get("meetingID")+ "&password=newuser" ;
                     System.out.println("joinparam=" + join);
                     aPIGenerator.createAPI("join", join);
-                   // String urlForStudent=aPIGenerator.apiWithChecksum;
                     return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
 
                 } 
