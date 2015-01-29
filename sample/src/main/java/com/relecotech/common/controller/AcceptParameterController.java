@@ -18,8 +18,6 @@ package com.relecotech.common.controller;
 import com.relecotech.bbb.api.APIGenerator;
 import com.relecotech.bbb.api.XmlParser;
 import com.relecotech.helper.TimeChecker;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
