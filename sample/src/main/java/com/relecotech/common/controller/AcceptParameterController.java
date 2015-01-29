@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +53,9 @@ public class AcceptParameterController {
                 String[] mapPair = str.split("=");
                 valueMap.put(mapPair[0], mapPair[1]);
             }
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            SAMLCredential credential = (SAMLCredential) authentication.getCredentials();
+             
             String startTime = valueMap.get("starttime");
             String intervalTime[] = startTime.substring(0, 5).split(":");
             int hour = Integer.parseInt(intervalTime[0]);
@@ -71,29 +77,30 @@ public class AcceptParameterController {
             System.out.println("Current Time=" + application1.date);
             boolean compareDates = application1.compareDates();
             System.out.println(valueMap);
-            System.out.println("time="+compareDates);
+            System.out.println("time=" + compareDates);
             if (compareDates) {
                 APIGenerator aPIGenerator = new APIGenerator();
                 if (valueMap.get("user").matches("true")) {
                     System.out.println("valuemap=" + valueMap);
                     //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
-                    String create = "attendeePW=ap"+"&meetingID=" + valueMap.get("meetingID") + "&moderatorPW=newuser" + "&name=" + valueMap.get("name");
+                    String create = "attendeePW=ap" + "&meetingID=" + valueMap.get("meetingID") + "&moderatorPW=newuser" + "&name=" + valueMap.get("name");
                     System.out.println("create parameter=" + create);
                     XmlParser.runAPI(aPIGenerator.createAPI("create", create));
-                    String join = "fullName=" + valueMap.get("fullName") + "&meetingID="+valueMap.get("meetingID")+ "&password=newuser" ;
+                   // String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=newuser";
+                    String join = "fullName=" +credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("meetingID") + "&password=newuser";
                     System.out.println("joinparam=" + join);
                     aPIGenerator.createAPI("join", join);
                     return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
 
-                } 
-                if(valueMap.get("user").matches("false")){
+                }
+                if (valueMap.get("user").matches("false")) {
                     Map<String, String> responceMap = XmlParser.runAPI(aPIGenerator.createAPI("isMeetingRunning", "meetingID=" + valueMap.get("meetingID")));
                     if (responceMap.get("running").matches("true")) {
-                        String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password="+ valueMap.get("attendeePW") ;
+                        //String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("attendeePW");
+                        String join = "fullName=" + credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("attendeePW");
                         aPIGenerator.createAPI("join", join);
                         return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
-                    }
-                    else{
+                    } else {
                         return new ModelAndView("redirect:" + "/student.jsp");
                     }
                 }
