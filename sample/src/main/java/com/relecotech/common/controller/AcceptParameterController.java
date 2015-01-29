@@ -83,7 +83,10 @@ public class AcceptParameterController {
                 if (valueMap.get("user").matches("true")) {
                     System.out.println("valuemap=" + valueMap);
                     //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
-                    String create = "attendeePW=ap" + "&meetingID=" + valueMap.get("meetingID") + "&moderatorPW=newuser" + "&name=" + valueMap.get("name");
+                   // String logoutUrl = java.net.URLDecoder.decode(valueMap.get("logoutURL"), "UTF-8");
+                    String logoutUrl = "https://"+valueMap.get("logoutURL")+".com";
+                    System.out.println("logout url="+logoutUrl);
+                    String create = "attendeePW=ap" + "&meetingID=" + valueMap.get("meetingID") + "&moderatorPW=newuser" + "&name=" + valueMap.get("name")+"&logoutURL="+logoutUrl;
                     System.out.println("create parameter=" + create);
                     XmlParser.runAPI(aPIGenerator.createAPI("create", create));
                    // String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=newuser";
