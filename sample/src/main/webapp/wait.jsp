@@ -8,6 +8,7 @@
 --%>
 
 
+<%@page import="java.util.Map"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,8 +18,9 @@
 <body>
      <center>  <h1>Come Back Later</h1><br></center>
   <center>  <h2>This lecture is not open to attendees.<br>
-        Please come back at the schedule time.
+        Please come back at the schedule time. 
     </h2></center>
+    
      <a href="https://dev-tms-test-dev-ed.my.salesforce.com/">Back</a>
 </body>
 </html>

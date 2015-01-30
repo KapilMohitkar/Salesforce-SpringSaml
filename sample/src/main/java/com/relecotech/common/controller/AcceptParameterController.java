@@ -70,7 +70,7 @@ public class AcceptParameterController {
             String endTimeForJoing = hour + ":" + minute;
 
             // String dateobj = new SimpleDateFormat("hh:mm a").format(new Date());
-            TimeChecker application1 = new TimeChecker();
+            TimeChecker application1 = new TimeChecker(valueMap.get("timeZone").replace("*","/"));
             application1.compareStringOne = startTime;
             System.out.println("Start Time=" + application1.compareStringOne);
             application1.compareStringTwo = endTimeForJoing;
@@ -100,7 +100,8 @@ public class AcceptParameterController {
                     return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
 
                 }
-                if (valueMap.get("user").matches("false")) {
+               // if (valueMap.get("user").matches("false")) {
+               else{
                     Map<String, String> responceMap = XmlParser.runAPI(aPIGenerator.createAPI("isMeetingRunning", "meetingID=" + valueMap.get("meetingID")));
                     if (responceMap.get("running").matches("true")) {
                         //String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("attendeePW");

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class TimeChecker {
 
@@ -16,11 +17,15 @@ public class TimeChecker {
 
     public String compareStringOne;
     public String compareStringTwo;
+    
 
+    //For date/time formatting 
     SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.US);
 
-    public TimeChecker() {
-        Calendar now = Calendar.getInstance();
+    public TimeChecker(String timeZoneSting) {
+        //To get current time
+        TimeZone timeZone = TimeZone.getTimeZone(timeZoneSting);
+        Calendar now = Calendar.getInstance(timeZone);
 
         int hour = now.get(Calendar.HOUR);
         int minute = now.get(Calendar.MINUTE);
@@ -59,7 +64,7 @@ public class TimeChecker {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TimeChecker application1= new TimeChecker();
+        TimeChecker application1= new TimeChecker("");
         application1.compareStringOne="07:09 AM";
         application1.compareStringTwo="08:15 AM";
         System.out.println(application1.date);
