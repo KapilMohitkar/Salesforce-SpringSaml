@@ -17,6 +17,7 @@ package com.relecotech.common.controller;
 
 import com.relecotech.bbb.api.APIGenerator;
 import com.relecotech.bbb.api.XmlParser;
+import com.relecotech.helper.SalesforceIDConverter;
 import com.relecotech.helper.TimeChecker;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +81,10 @@ public class AcceptParameterController {
             System.out.println("time=" + compareDates);
             if (compareDates) {
                 APIGenerator aPIGenerator = new APIGenerator();
-                if (valueMap.get("user").matches("true")) {
+                System.out.println("converted id="+SalesforceIDConverter.convertID(valueMap.get("code")));
+                System.out.println((credential.getAttributeAsString("ContactId")));
+               if(valueMap.get("code").matches(SalesforceIDConverter.convertID(credential.getAttributeAsString("ContactId"))))    {
+                //if (valueMap.get("user").matches("true")) {
                     System.out.println("valuemap=" + valueMap);
                     //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
                    // String logoutUrl = java.net.URLDecoder.decode(valueMap.get("logoutURL"), "UTF-8");
