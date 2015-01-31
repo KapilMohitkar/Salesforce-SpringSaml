@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.security.extensions</groupId>
-  <artifactId>tms-bbb</artifactId>
+  <artifactId>spring-security-saml2-sample</artifactId>
   <packaging>war</packaging>
   <version>1.0.0.RELEASE-SNAPSHOT</version>
   <name>Spring Security SAML v2 sample webapp</name>
@@ -83,7 +83,7 @@
     </repository>
   </repositories>
   <build>
-    <finalName>tms-bbb</finalName>
+    <finalName>spring-security-saml2-sample</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -99,7 +99,7 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
         <configuration>
-          <path>/tms-bbb</path>
+          <path>/spring-security-saml2-sample</path>
         </configuration>
       </plugin>
     </plugins>
