@@ -16,8 +16,10 @@
     <title>Wait</title>
 </head>
 <body>
-    
+    <center> <img src="${pageContext.request.contextPath}/images/bbbtime.jpg" width="250"/> 
     ${wait}
+
+
 
 
 </body>

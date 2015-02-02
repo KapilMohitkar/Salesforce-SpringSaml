@@ -12,11 +12,12 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <!--    <center>  <h1>Wait The Presenter is not join meeting yet!</h1>
+        <!--    <center>  <h1>Wait! Presenter has not joined meeting yet!</h1>
              <h2>
-                    Please try after few minutes.
+                    Please check meeting scheduled time or try after few minutes.
                 </h2>
              <a href="https://dev-tms-test-dev-ed.my.salesforce.com/">Back </a></center>-->
+        <center> <img src="${pageContext.request.contextPath}/images/bbbtime.jpg" style="width:250px"/> </center>
         ${student}
     </body>
 </html>

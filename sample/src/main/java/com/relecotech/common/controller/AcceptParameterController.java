@@ -120,9 +120,10 @@ public class AcceptParameterController {
                         aPIGenerator.createAPI("join", join);
                         return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
                     } else {
-                        String student = "<center>  <h1>Wait The Presenter is not join meeting yet!</h1>\n"
+                        String student = "<center>  <h1>Wait! Presenter has not joined meeting yet!</h1>\n"
+//                                +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
                                 + "     <h2>\n"
-                                + "            Please try after few minutes.\n"
+                                + "           Please try after few minutes.\n"
                                 + "        \n"
                                 + "<br>Date:" + valueMap.get("d").replace("*", "/") + "  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
                                 + "    </h2></center> ";
@@ -136,9 +137,10 @@ public class AcceptParameterController {
                 if (true) {
                     //  String logoutUrl = "https://" + valueMap.get("URL") + ".com";
                     //return new ModelAndView("redirect:" + "/wait/"+valueMap.get("starttime"));
-                    String wait = "<center> <h1>Come Back Later</h1><br></center>\n"
-                            + "  <center>  <h2>This lecture is not open to attendees.<br>\n"
-                            + "        Please come back at the schedule time. \n<br>" + "<br>Date:" + valueMap.get("d").replace("*", "/") + "  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
+                    String wait = "<center> <h1>Meeting in Future or Past!</h1><br></center>\n"
+//                             +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
+                            + "  <center>  <h2>Meeting is not open to attendees.<br>\n"
+                            + "        Please check meeting schedule time. \n<br>" + "<br>Date:" + valueMap.get("d").replace("*", "/") + "  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
                             + "    </h2></center> ";
                     return new ModelAndView("wait", "wait", wait);
                 } else {
