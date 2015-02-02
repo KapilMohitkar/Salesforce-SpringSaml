@@ -19,8 +19,12 @@ import com.relecotech.bbb.api.APIGenerator;
 import com.relecotech.bbb.api.XmlParser;
 import com.relecotech.helper.SalesforceIDConverter;
 import com.relecotech.helper.TimeChecker;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -54,9 +58,10 @@ public class AcceptParameterController {
                 String[] mapPair = str.split("=");
                 valueMap.put(mapPair[0], mapPair[1]);
             }
+            String logoutUrl = "https://" + valueMap.get("URL") + ".com";
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             SAMLCredential credential = (SAMLCredential) authentication.getCredentials();
-             
+
             String startTime = valueMap.get("starttime");
             String intervalTime[] = startTime.substring(0, 5).split(":");
             int hour = Integer.parseInt(intervalTime[0]);
@@ -70,7 +75,7 @@ public class AcceptParameterController {
             String endTimeForJoing = hour + ":" + minute;
 
             // String dateobj = new SimpleDateFormat("hh:mm a").format(new Date());
-            TimeChecker application1 = new TimeChecker(valueMap.get("timeZone").replace("*","/"));
+            TimeChecker application1 = new TimeChecker(valueMap.get("timeZone").replace("*", "/"));
             application1.compareStringOne = startTime;
             System.out.println("Start Time=" + application1.compareStringOne);
             application1.compareStringTwo = endTimeForJoing;
@@ -79,43 +84,66 @@ public class AcceptParameterController {
             boolean compareDates = application1.compareDates();
             System.out.println(valueMap);
             System.out.println("time=" + compareDates);
-            if (compareDates) {
+            DateFormat df = new SimpleDateFormat("d/M/yyyy");
+            TimeZone timeZone = TimeZone.getTimeZone(valueMap.get("timeZone").replace("*", "/"));
+            Calendar calobj = Calendar.getInstance(timeZone);
+            String today = df.format(calobj.getTime());
+            System.out.println(df.format(calobj.getTime()));
+            System.out.println("date by sfdc=" + valueMap.get("d").replace("*", "/"));
+            if (compareDates && today.matches(valueMap.get("d").replace("*", "/"))) {
                 APIGenerator aPIGenerator = new APIGenerator();
-                System.out.println("converted id="+SalesforceIDConverter.convertID(valueMap.get("code")));
+                System.out.println("converted id=" + SalesforceIDConverter.convertID(valueMap.get("code")));
                 System.out.println((credential.getAttributeAsString("ContactId")));
-               if(valueMap.get("code").matches(SalesforceIDConverter.convertID(credential.getAttributeAsString("ContactId"))))    {
-                //if (valueMap.get("user").matches("true")) {
+                if (valueMap.get("code").matches(SalesforceIDConverter.convertID(credential.getAttributeAsString("ContactId")))) {
+                    //if (valueMap.get("user").matches("true")) {
                     System.out.println("valuemap=" + valueMap);
                     //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
-                   // String logoutUrl = java.net.URLDecoder.decode(valueMap.get("logoutURL"), "UTF-8");
-                    String logoutUrl = "https://"+valueMap.get("logoutURL")+".com";
-                    System.out.println("logout url="+logoutUrl);
-                    String create = "attendeePW=ap" + "&meetingID=" + valueMap.get("meetingID") + "&moderatorPW=newuser" + "&name=" + valueMap.get("name")+"&logoutURL="+logoutUrl;
+                    // String logoutUrl = java.net.URLDecoder.decode(valueMap.get("logoutURL"), "UTF-8");
+                    // String logoutUrl = "https://" + valueMap.get("URL") + ".com";
+                    System.out.println("logout url=" + logoutUrl);
+                    String create = "attendeePW=ap" + "&meetingID=" + valueMap.get("name") + "&moderatorPW=newuser" + "&name=" + valueMap.get("name") + "&logoutURL=" + logoutUrl;
                     System.out.println("create parameter=" + create);
                     XmlParser.runAPI(aPIGenerator.createAPI("create", create));
-                   // String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=newuser";
-                    String join = "fullName=" +credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("meetingID") + "&password=newuser";
+                    // String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=newuser";
+                    String join = "fullName=" + credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("name") + "&password=newuser";
                     System.out.println("joinparam=" + join);
                     aPIGenerator.createAPI("join", join);
                     return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
 
-                }
-               // if (valueMap.get("user").matches("false")) {
-               else{
-                    Map<String, String> responceMap = XmlParser.runAPI(aPIGenerator.createAPI("isMeetingRunning", "meetingID=" + valueMap.get("meetingID")));
+                } // if (valueMap.get("user").matches("false")) {
+                else {
+                    Map<String, String> responceMap = XmlParser.runAPI(aPIGenerator.createAPI("isMeetingRunning", "meetingID=" + valueMap.get("name")));
+                     String join = "fullName=" + credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("name") + "&password=ap";
                     if (responceMap.get("running").matches("true")) {
                         //String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("attendeePW");
-                        String join = "fullName=" + credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("attendeePW");
+//                        String join = "fullName=" + credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("attendeePW");
                         aPIGenerator.createAPI("join", join);
                         return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
                     } else {
-                        return new ModelAndView("redirect:" + "/student.jsp");
+                        String student = "<center>  <h1>Wait The Presenter is not join meeting yet!</h1>\n"
+                                + "     <h2>\n"
+                                + "            Please try after few minutes.\n"
+                                + "        \n"
+                                + "<br>Date:" + valueMap.get("d").replace("*", "/") + "  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
+                                + "    </h2></center> ";
+                        // return new ModelAndView("redirect:" + "/student.jsp");
+                        return new ModelAndView("student", "student", student);
                     }
                 }
 
             } else {
 
-                return new ModelAndView("redirect:" + "/wait.jsp");
+                if (true) {
+                    //  String logoutUrl = "https://" + valueMap.get("URL") + ".com";
+                    //return new ModelAndView("redirect:" + "/wait/"+valueMap.get("starttime"));
+                    String wait = "<center> <h1>Come Back Later</h1><br></center>\n"
+                            + "  <center>  <h2>This lecture is not open to attendees.<br>\n"
+                            + "        Please come back at the schedule time. \n<br>" + "<br>Date:" + valueMap.get("d").replace("*", "/") + "  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
+                            + "    </h2></center> ";
+                    return new ModelAndView("wait", "wait", wait);
+                } else {
+
+                }
             }
             //return new ModelAndView("redirect:" + "www.url.com");
 //        } catch (SAXException ex) {

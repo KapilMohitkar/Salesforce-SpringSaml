@@ -26,9 +26,12 @@ public class TimeChecker {
         //To get current time
         TimeZone timeZone = TimeZone.getTimeZone(timeZoneSting);
         Calendar now = Calendar.getInstance(timeZone);
-
+        Date time = now.getTime();
+        System.out.println(time);
         int hour = now.get(Calendar.HOUR);
         int minute = now.get(Calendar.MINUTE);
+      
+        
 
        date = parseDate(hour + ":" + minute);
     }

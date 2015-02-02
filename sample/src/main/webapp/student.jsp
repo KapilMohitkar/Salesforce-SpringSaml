@@ -12,10 +12,11 @@
         <title>JSP Page</title>
     </head>
     <body>
-    <center>  <h1>Wait The Presenter is not join meeting yet!</h1></center>
-    <center>  <h2>
-            Please try after few minutes.
-        </h2></center>
-    <center>  <a href="https://dev-tms-test-dev-ed.my.salesforce.com/">Back </a></center>
-</body>
+        <!--    <center>  <h1>Wait The Presenter is not join meeting yet!</h1>
+             <h2>
+                    Please try after few minutes.
+                </h2>
+             <a href="https://dev-tms-test-dev-ed.my.salesforce.com/">Back </a></center>-->
+        ${student}
+    </body>
 </html>
