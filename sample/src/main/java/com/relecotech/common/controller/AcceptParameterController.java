@@ -17,14 +17,13 @@ package com.relecotech.common.controller;
 
 import com.relecotech.bbb.api.APIGenerator;
 import com.relecotech.bbb.api.XmlParser;
+import com.relecotech.helper.AddSubtractTime;
 import com.relecotech.helper.SalesforceIDConverter;
-import com.relecotech.helper.TimeChecker;
-import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -63,50 +62,35 @@ public class AcceptParameterController {
             String logoutUrl = "https://" + valueMap.get("URL") + ".com";
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             SAMLCredential credential = (SAMLCredential) authentication.getCredentials();
-
-            String startTime = valueMap.get("starttime");
-           // String intervalTime[] = startTime.substring(0, 5).split(":");
-            startTime= startTime.toLowerCase();
-             startTime=  startTime.replace("am","");
-             startTime=  startTime.replace("pm","");
-             startTime=startTime.trim();
-              String intervalTime[] = startTime.split(":");
-            int hour = Integer.parseInt(intervalTime[0].trim());
-            int minute = Integer.parseInt(intervalTime[1].trim());
-            minute = minute + 15;
-            if (minute >= 60) {
-                minute = minute - 60;
-                hour = hour + 1;
-
-            }
-            String endTimeForJoing = hour + ":" + minute;
-            
-            // String dateobj = new SimpleDateFormat("hh:mm a").format(new Date());
-            TimeChecker application1 = new TimeChecker(valueMap.get("timeZone").replace("*", "/"));
-            application1.compareStringOne = startTime;
-            System.out.println("Start Time=" + application1.compareStringOne);
-            application1.compareStringTwo = endTimeForJoing;
-            System.out.println("End Time=" + application1.compareStringTwo);
-            System.out.println("Current Time=" + application1.date);
-            boolean compareDates = application1.compareDates();
-            System.out.println(valueMap);
-            System.out.println("time=" + compareDates);
-            DateFormat df = new SimpleDateFormat("d/M/yyyy");
             TimeZone timeZone = TimeZone.getTimeZone(valueMap.get("timeZone").replace("*", "/"));
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm a");
+
             Calendar calobj = Calendar.getInstance(timeZone);
-            String today = df.format(calobj.getTime());
-            System.out.println(df.format(calobj.getTime()));
-            System.out.println("date by sfdc=" + valueMap.get("d").replace("*", "/"));
-            if (compareDates && today.matches(valueMap.get("d").replace("*", "/"))) {
+            String SystemCurrentTime = dateFormat.format(calobj.getTime());
+            Date SystemCurrentDateTime = dateFormat.parse(SystemCurrentTime);
+
+            //SFDC Meeting DATE/TIME 
+            String sfdcMeetingTime = valueMap.get("d").replace("*", "/");
+            System.out.println("sfdcMeetingTime=" + sfdcMeetingTime);
+            Date sfdcMeetingDateTime = dateFormat.parse(sfdcMeetingTime);
+            //TIME Before Meeting can satarted 
+            Date sfdcMeetingBeforeDateTime = dateFormat.parse(AddSubtractTime.getSubtractedTime(sfdcMeetingTime, timeZone));
+            //TIME after Meeting cannot be satarted 
+            Date sfdcMeetingAfterDateTime = dateFormat.parse(AddSubtractTime.getAddedTime(sfdcMeetingTime, timeZone));
+
+            System.out.println("SystemCurrentDateTime=" + SystemCurrentDateTime);
+            System.out.println("sfdcMeetingDateTime=" + sfdcMeetingDateTime);
+            System.out.println("sfdcMeetingAfterDateTime=" + sfdcMeetingAfterDateTime);
+            System.out.println("sfdcMeetingBeforeDateTime=" + sfdcMeetingBeforeDateTime);
+            if (SystemCurrentDateTime.after(sfdcMeetingBeforeDateTime) && SystemCurrentDateTime.before(sfdcMeetingAfterDateTime)) {
                 APIGenerator aPIGenerator = new APIGenerator();
                 System.out.println("converted id=" + SalesforceIDConverter.convertID(valueMap.get("code")));
                 System.out.println((credential.getAttributeAsString("ContactId")));
                 if (valueMap.get("code").matches(SalesforceIDConverter.convertID(credential.getAttributeAsString("ContactId")))) {
-                    //if (valueMap.get("user").matches("true")) {
+
                     System.out.println("valuemap=" + valueMap);
-                    //attendeePW=ap&meetingID=random-9736617&moderatorPW=mp&name=random-9736617
-                    // String logoutUrl = java.net.URLDecoder.decode(valueMap.get("logoutURL"), "UTF-8");
-                    // String logoutUrl = "https://" + valueMap.get("URL") + ".com";
+
                     System.out.println("logout url=" + logoutUrl);
                     String create = "attendeePW=ap" + "&meetingID=" + valueMap.get("name") + "&moderatorPW=newuser" + "&name=" + valueMap.get("name") + "&logoutURL=" + logoutUrl;
                     System.out.println("create parameter=" + create);
@@ -117,13 +101,11 @@ public class AcceptParameterController {
                     aPIGenerator.createAPI("join", join);
                     return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
 
-                } // if (valueMap.get("user").matches("false")) {
-                else {
+                } else {
                     Map<String, String> responceMap = XmlParser.runAPI(aPIGenerator.createAPI("isMeetingRunning", "meetingID=" + valueMap.get("name")));
                     String join = "fullName=" + credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("name") + "&password=ap";
                     if (responceMap.get("running").matches("true")) {
-                        //String join = "fullName=" + valueMap.get("fullName") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("attendeePW");
-//                        String join = "fullName=" + credential.getAttributeAsString("username") + "&meetingID=" + valueMap.get("meetingID") + "&password=" + valueMap.get("attendeePW");
+
                         aPIGenerator.createAPI("join", join);
                         return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
                     } else {
@@ -140,53 +122,33 @@ public class AcceptParameterController {
                 }
 
             } else {
-                String sfdcDateInString = valueMap.get("d").replace("*", "/");
-                DateFormat format = new SimpleDateFormat("d/M/yyyy");
-                Date dateSfdc = format.parse(sfdcDateInString);
-                System.out.println("dateSfdc="+dateSfdc);
-                Date dateJava=format.parse(today);
-                System.out.println("dateJava="+dateJava);
-               //for Future Date
-                System.out.println("result for compare date="+dateJava.compareTo(dateSfdc));
-                if (dateJava.compareTo(dateSfdc)== -1 ) {
-                    //  String logoutUrl = "https://" + valueMap.get("URL") + ".com";
-                    //return new ModelAndView("redirect:" + "/wait/"+valueMap.get("starttime"));
+//                
+                if (SystemCurrentDateTime.compareTo(sfdcMeetingDateTime) == -1) {
+
                     String wait = "<center> <h1>Too Early for Meeting!</h1><br></center>\n"
                             //                             +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
                             + "  <center>  <h2>Meeting is not yet open.<br>\n"
-                            + "        Please check meeting schedule time. \n<br>" + "<br>Date:" + valueMap.get("d").replace("*", "/") +"Timezone:"+valueMap.get("timeZone").replace("*", "/")+"Current Time:" +"  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
+                            + "        Please check meeting schedule time. \n<br>" + "<br>Meeting Date/Time:" + sfdcMeetingDateTime + "<br>System Current Date/Time:" + SystemCurrentDateTime + "<br><a href=" + logoutUrl + ">Back</a>"
                             + "    </h2><h3>*Meeting will open 15 minutes before scheduled time</h3></center> ";
                     return new ModelAndView("wait", "wait", wait);
-                } 
-                 //for Past Date
-                if (dateJava.compareTo(dateSfdc)== 1 ){
-                      String wait = "<center> <h1>Meeting is Over!</h1><br></center>\n"
+                }
+                //for Past Date
+                if (SystemCurrentDateTime.compareTo(sfdcMeetingDateTime) == 1) {
+                    String wait = "<center> <h1>Meeting is Over!</h1><br></center>\n"
                             //                             +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
                             + "  <center>  <h2>Meeting can not open.<br>\n"
-                            + "        Meeting was scheduled on - \n<br>" + "<br>Date:" + valueMap.get("d").replace("*", "/") + "  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
+                            + "        Meeting was scheduled on - \n<br>" + "<br>Meeting Date/Time:" + sfdcMeetingDateTime + "<br>System Current Date/Time:" + SystemCurrentDateTime + "<br><a href=" + logoutUrl + ">Back</a>"
                             + "    </h2></center> ";
                     return new ModelAndView("wait", "wait", wait);
 
                 }
-                 if (dateJava.compareTo(dateSfdc)== 0 ){
-                      String wait = "<center> <h1>Today!</h1><br></center>\n"
-                            //                             +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
-                            + "  <center>  <h2>Meeting is not yet open.<br>\n"
-                            + "        Please check meeting schedule time. \n<br>" + "<br>Date:" + valueMap.get("d").replace("*", "/") + "  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
-                            + "    </h2><h3>*Meeting will open 15 minutes before scheduled time</h3></center> ";
-                    return new ModelAndView("wait", "wait", wait);
-
-                }
+//                
             }
-            //return new ModelAndView("redirect:" + "www.url.com");
-//        } catch (SAXException ex) {
-//            Logger.getLogger(MovieController.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (TransformerException ex) {
-//            Logger.getLogger(MovieController.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (Exception ex) {
-            Logger.getLogger(JoinMeetingController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Exception="+ex);
         }
-        //return new ModelAndView("redirect:" + aPIGenerator.apiWithChecksum);
+
         return null;
     }
 
