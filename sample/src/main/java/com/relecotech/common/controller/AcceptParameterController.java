@@ -128,8 +128,8 @@ public class AcceptParameterController {
                     String wait = "<center> <h1>Too Early for Meeting!</h1><br></center>\n"
                             //                             +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
                             + "  <center>  <h2>Meeting is not yet open.<br>\n"
-                            + "        Please check meeting schedule time. \n<br>" + "<br>Meeting Date/Time:" + sfdcMeetingDateTime + "<br>System Current Date/Time:" + SystemCurrentDateTime + "<br><a href=" + logoutUrl + ">Back</a>"
-                            + "    </h2><h3>*Meeting will open 15 minutes before scheduled time</h3></center> ";
+                            + "        Please check meeting schedule time. \n<br>" + "<br>Meeting Date/Time:" + sfdcMeetingDateTime + "</h2><h3><br>System Current Date/Time:" + SystemCurrentDateTime + "<br><a href=" + logoutUrl + ">Back</a>"
+                            + "    *Meeting will open 15 minutes before scheduled time</h3></center> ";
                     return new ModelAndView("wait", "wait", wait);
                 }
                 //for Past Date
@@ -137,8 +137,8 @@ public class AcceptParameterController {
                     String wait = "<center> <h1>Meeting is Over!</h1><br></center>\n"
                             //                             +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
                             + "  <center>  <h2>Meeting can not open.<br>\n"
-                            + "        Meeting was scheduled on - \n<br>" + "<br>Meeting Date/Time:" + sfdcMeetingDateTime + "<br>System Current Date/Time:" + SystemCurrentDateTime + "<br><a href=" + logoutUrl + ">Back</a>"
-                            + "    </h2></center> ";
+                            + "        Meeting was scheduled on - \n<br>" + "<br>Meeting Date/Time:" + sfdcMeetingDateTime + "</h2><h3><br>System Current Date/Time:" + SystemCurrentDateTime + "<br><a href=" + logoutUrl + ">Back</a>"
+                            + "  </h3>  </center> ";
                     return new ModelAndView("wait", "wait", wait);
 
                 }
