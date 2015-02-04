@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import org.springframework.security.core.Authentication;
@@ -65,10 +64,12 @@ public class AcceptParameterController {
             TimeZone timeZone = TimeZone.getTimeZone(valueMap.get("timeZone").replace("*", "/"));
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm a");
+            dateFormat.setTimeZone(timeZone);
 
             Calendar calobj = Calendar.getInstance(timeZone);
-            String SystemCurrentTime = dateFormat.format(calobj.getTime());
+           String SystemCurrentTime = dateFormat.format(calobj.getTime());
             Date SystemCurrentDateTime = dateFormat.parse(SystemCurrentTime);
+          // Date SystemCurrentDateTime = calobj.getTime();
 
             //SFDC Meeting DATE/TIME 
             String sfdcMeetingTime = valueMap.get("d").replace("*", "/");
@@ -114,7 +115,7 @@ public class AcceptParameterController {
                                 + "     <h2>\n"
                                 + "           Please try after few minutes.\n"
                                 + "        \n"
-                                + "<br>Date:" + valueMap.get("d").replace("*", "/") + "  Time:" + valueMap.get("starttime") + "<br><a href=" + logoutUrl + ">Back</a>"
+                                + "<br>Meeting Date/Time:" + dateFormat.format(sfdcMeetingDateTime) + "<br><a href=" + logoutUrl + ">Back</a>"
                                 + "    </h2></center> ";
                         // return new ModelAndView("redirect:" + "/student.jsp");
                         return new ModelAndView("student", "student", student);
@@ -128,8 +129,8 @@ public class AcceptParameterController {
                     String wait = "<center> <h1>Too Early for Meeting!</h1><br></center>\n"
                             //                             +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
                             + "  <center>  <h2>Meeting is not yet open.<br>\n"
-                            + "        Please check meeting schedule time. \n<br>" + "<br>Meeting Date/Time:" + sfdcMeetingDateTime + "</h2><h3><br>System Current Date/Time:" + SystemCurrentDateTime + "<br><a href=" + logoutUrl + ">Back</a>"
-                            + "    *Meeting will open 15 minutes before scheduled time</h3></center> ";
+                            + "  Please check meeting schedule time. \n<br>" + "<br>Meeting Date/Time:" + dateFormat.format(sfdcMeetingDateTime) + "</h2><h3>System Current Date/Time:" + dateFormat.format(SystemCurrentDateTime) + "<br>*Meeting will open 15 minutes before scheduled time</h3><a href=" + logoutUrl + ">Back</a>"
+                            + "  </center> ";
                     return new ModelAndView("wait", "wait", wait);
                 }
                 //for Past Date
@@ -137,7 +138,7 @@ public class AcceptParameterController {
                     String wait = "<center> <h1>Meeting is Over!</h1><br></center>\n"
                             //                             +"<img src=\"${pageContext.request.contextPath}/images/bbbtime.jpg\" style=\"width:304px;height:228px\"/> "
                             + "  <center>  <h2>Meeting can not open.<br>\n"
-                            + "        Meeting was scheduled on - \n<br>" + "<br>Meeting Date/Time:" + sfdcMeetingDateTime + "</h2><h3><br>System Current Date/Time:" + SystemCurrentDateTime + "<br><a href=" + logoutUrl + ">Back</a>"
+                            + "        Meeting was scheduled on - \n<br>" + "<br>Meeting Date/Time:" + dateFormat.format(sfdcMeetingDateTime) + "</h2><h3><br>System Current Date/Time:" + dateFormat.format(SystemCurrentDateTime) + "<br><a href=" + logoutUrl + ">Back</a>"
                             + "  </h3>  </center> ";
                     return new ModelAndView("wait", "wait", wait);
 
